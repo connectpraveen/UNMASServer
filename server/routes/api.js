@@ -165,7 +165,7 @@ router.get('/studentname', cors(), (req, res) => {
         from: 'unmas.manager@gmail.com',
         to: email,
         subject: 'UNMAS Student',
-        html: 'You have invited by UNMAS manager. <br> Your current role is student. Kindly click <a href=http://localhost:4200/>here</a> to access the application. <br> Thanks <br> UNMAS'        
+        html: 'You have invited by UNMAS manager. <br> Your current role is student. Kindly click <a href=http://braintechsolution.in/>here</a> to access the application. <br> Thanks <br> UNMAS'        
     }
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
