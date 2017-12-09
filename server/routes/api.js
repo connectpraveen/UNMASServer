@@ -25,9 +25,10 @@ app.use(bodyParser.json());
 
 
 // Connect
-const connection = (closure) => {
-
-    return MongoClient.connect('mongodb://connectpraveen:navya123@ds259245.mlab.com:59245/unmaslearning', (err, db) => {
+const connection = (closure) => {    
+    //Prod connection
+    //mongodb://connectpraveen:navya123@ds259245.mlab.com:59245/unmaslearning
+    return MongoClient.connect('mongodb://connectpraveen:navya123@ds129966.mlab.com:29966/unmaslearning_dev', (err, db) => {
         //return MongoClient.connect('mongodb://localhost:27017/mean', (err, db) => {
         if (err) return console.log(err);
 
@@ -141,6 +142,42 @@ router.get('/managername', cors(), (req, res) => {
     });
 });
 
+router.get('/regsave', cors(), (req, res) => {
+    var email = req.url.split('?')[1].split('=')[1];
+    console.log(email);
+    connection((db) => {
+        db.collection('programs').find({ _id: 1 })
+        .forEach(function (doc) {                
+          doc.training_program.forEach(function (event) {
+            event.students.forEach(function (student) {
+                if (student.Email === email) {
+                    student.Registered='Yes';
+                  }
+               });
+          });
+          db.collection('programs').save(doc);
+        })
+    });
+});
+
+router.get('/enrollsave', cors(), (req, res) => {
+    var email = req.url.split('?')[1].split('=')[1];
+    console.log(email);
+    connection((db) => {
+        db.collection('programs').find({ _id: 1 })
+        .forEach(function (doc) {                
+          doc.training_program.forEach(function (event) {
+            event.students.forEach(function (student) {
+                if (student.Email === email) {
+                    student.Enrolled='Yes';
+                  }
+               });
+          });
+          db.collection('programs').save(doc);
+        })
+    });
+});
+
 router.get('/programcreate', cors(), (req, res) => {
     var currentDate = new Date();
     var trainingname = "";
@@ -225,7 +262,9 @@ router.get('/studentname', cors(), (req, res) => {
                     "training_program.$.students" : {
                         userId: '_' + Math.random().toString(36).substr(2, 9),
                         Name: name,
-                        Email: email
+                        Email: email,
+                        Registered:"No",
+                        Enrolled:"No"
                     }
                 }
             })
@@ -260,6 +299,7 @@ router.get('/studentname', cors(), (req, res) => {
     })
 
 });
+
 // Get users
 router.get('/users', cors(), (req, res) => {
     connection((db) => {
@@ -276,7 +316,7 @@ router.get('/users', cors(), (req, res) => {
     });
 });
 
-router.get('/roles', cors(), (req, res) => {
+router.get('/roles', cors(), (req, res) => {    
     connection((db) => {
         db.collection('users')
             .find()
@@ -288,6 +328,8 @@ router.get('/roles', cors(), (req, res) => {
             .catch((err) => {
                 sendError(err, res);
             });
+
+         
     });
 });
 
