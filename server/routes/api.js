@@ -30,7 +30,9 @@ const connection = (closure) => {
     //mongodb://connectpraveen:navya123@ds259245.mlab.com:59245/unmaslearning
     //Dev connection
     //mongodb://connectpraveen:navya123@ds129966.mlab.com:29966/unmaslearning_dev
-    return MongoClient.connect('mongodb://connectpraveen:navya123@ds259245.mlab.com:59245/unmaslearning', (err, db) => {
+    //UNMAS DB Original
+    //mongodb://unmas:UNMAS4Libya@ds157248.mlab.com:57248/unmaslearning
+    return MongoClient.connect('mongodb://unmas:UNMAS4Libya@ds157248.mlab.com:57248/unmaslearning', (err, db) => {
         //return MongoClient.connect('mongodb://localhost:27017/mean', (err, db) => {
         if (err) return console.log(err);
 
